@@ -3,7 +3,7 @@
 ```
 npm init
 
-npm i express dotenv mongoose
+npm i express dotenv mongoose jsonwebtoken bcrypt validator
 
 nodemon index.js
 ```

@@ -12,13 +12,23 @@ db.once("open", function () {
     console.log("connection successful");
 });
 
-const mySchema = new Schema({
-    something: String,
+const userSchema = new Schema({
+    name:String,
+    email:String,
+    password:String,
+    tasks:[
+        {
+            title:String,
+            priority:Number,
+            completed:Boolean,
+            cancelled:Boolean
+        }
+    ]
 });
 
-const mine = mongoose.model("myModel", sessionSchema, "mine");
+const users = mongoose.model("users", userSchema, "users");
 
 
 module.exports={
-    mine
+    users
 }
