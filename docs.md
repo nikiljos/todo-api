@@ -49,7 +49,23 @@ Authorization: Bearer <auth_token>
 ```
 
 ### GET `/todo/report`
+#### Header
+```
+Authorization: Bearer <auth_token>
+```
 ### POST `/todo`
+Add a task
+#### Header
+```
+Authorization: Bearer <auth_token>
+```
+#### Body
+```
+{
+    "title":"hello world nncn",
+    "priority":2
+}
+```
 ### PUT `/todo/pending`
 ### PUT `/todo/complete`
 ### PUT `/todo/cancel`
