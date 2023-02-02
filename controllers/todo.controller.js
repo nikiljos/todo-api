@@ -33,9 +33,10 @@ const updateTask = (req, res) => {
         return
     }
     let { taskId } = req.body;
+    console.log(taskId)
     db.users
         .findOneAndUpdate(
-            { _id, "tasks.$._id": taskId },
+            { _id, "tasks._id": taskId },
             {
                 "$set": {
                     "tasks.$.status": type,
@@ -43,17 +44,28 @@ const updateTask = (req, res) => {
             }
         )
         .then((data) => {
-            console.log(data);
+            // console.log(data);
             if (data) {
                 res.status(200).send({
                     status: true,
                     // data
                 });
+                
             }
-            res.status(400).send({
-                status: false,
-                // data
-            });
+            else{
+                res.status(400).send({
+                    status: false,
+                    // data
+                });
+
+            }
+            
+        })
+        .catch(err=>{
+            console.log(err)
+            res.status(500).send({
+                status:false
+            })
         });
 };
 
