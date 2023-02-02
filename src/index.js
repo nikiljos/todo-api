@@ -5,7 +5,6 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const router=require('./routes.js')
-const db=require('./db.js')
 
 app.use(express.json())
 app.use(router)

@@ -22,7 +22,8 @@ const userSchema = new Schema({
             priority:Number,
             status:String
         }
-    ]
+    ],
+    deleteCount:Number
 });
 
 const users = mongoose.model("users", userSchema, "users");

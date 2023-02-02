@@ -69,6 +69,67 @@ const updateTask = (req, res) => {
         });
 };
 
+const deleteTask = async(req, res) => {
+    let _id = res.locals.userId;
+    let { taskId } = req.body;
+    console.log(taskId);
+    let validTask = await db.users
+        .find({
+            _id,
+            tasks: {
+                $elemMatch: { _id: taskId },
+            },
+        })
+        .then((data) => {
+            console.log(data);
+            if (data.length > 0) {
+                return true;
+            } else {
+                throw "err";
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).send({
+                status: false,
+            });
+            return false;
+        });
+
+    validTask&&db.users
+        .findOneAndUpdate(
+            { _id },
+            {
+                $pull: {
+                    tasks: {
+                        _id: taskId,
+                    },
+                },
+                $inc: { deleteCount: 1 },
+            }
+        )
+        .then((data) => {
+            console.log(data);
+            if (data) {
+                res.status(200).send({
+                    status: true,
+                    // data
+                });
+            } else {
+                res.status(400).send({
+                    status: false,
+                    // data
+                });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).send({
+                status: false,
+            });
+        });
+};
+
 const listTask=(req,res)=>{
     db.users.find({
         _id:res.locals.userId
@@ -92,8 +153,46 @@ const listTask=(req,res)=>{
     })
 }
 
+const summarizeTask=(req,res)=>{
+    db.users.find({
+        _id:res.locals.userId
+    })
+    .then(data=>{
+        let taskData={
+            pending:[],
+            cancel:[],
+            complete:[]
+        }
+        data[0].tasks.forEach(elt=>{
+            let {status}=elt;
+            if(status==="pending"||status==="cancel"||status==="complete"){
+                taskData[status].push(elt)
+            }
+        })
+        res.status(200).send({
+            status: true,
+            data: {
+                details: taskData,
+                count: {
+                    pending: taskData.pending.length,
+                    cancel: taskData.cancel.length,
+                    complete: taskData.complete.length,
+                    delete:data[0].deleteCount||0
+                },
+            },
+        });
+    })
+    .catch(err=>{
+        res.status(500).send({
+            status:false
+        })
+    })
+}
+
 module.exports={
     addTask,
     listTask,
-    updateTask
+    updateTask,
+    deleteTask,
+    summarizeTask
 }
