@@ -1,7 +1,7 @@
 const db=require("../db")
-const {hashInputPassword,verifyInputPassword}=require("../utils/password")
+const {hashInputPassword,verifyInputPassword,checkPasswordStrength}=require("../utils/password")
 const {generateToken}=require("../utils/jwt");
-const e = require("express");
+var validator = require("validator");
 
 const handler=(req,res)=>{
     res.send("hello");
@@ -14,6 +14,20 @@ const signUp = async(req, res) => {
         res.status(400).send({
             status: false,
             message: "Invalid Input",
+        });
+        return;
+    }
+    if(!validator.isEmail(email)){
+        res.status(400).send({
+            status: false,
+            message: "Invalid Email",
+        });
+        return;
+    }
+    if(!checkPasswordStrength(password)){
+        res.status(400).send({
+            status: false,
+            message: "Please make sure you use atleast 1 uppercase letter, 1 number and minimum of 5 characters",
         });
         return;
     }

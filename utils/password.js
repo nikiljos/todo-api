@@ -5,10 +5,9 @@ const hashRounds = 2;
 
 const checkPasswordStrength = (pass) =>
     validator.isStrongPassword(pass, {
-        minLength: 8,
-        minUppercase: 1,
+        minLength: 3,
         minNumbers: 1,
-        minSymbols: 1,
+        minUpperCase: 1,
         returnScore: false,
     });
 
