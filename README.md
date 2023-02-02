@@ -1,9 +1,5 @@
-# A starter template for my NodeJS Projects with Mongoose
+# Backend API for a ToDo App
 
-```
-npm init
+**Frontend:** Work Under progress
 
-npm i express dotenv mongoose jsonwebtoken bcrypt validator
-
-nodemon index.js
-```
+**Backend API URL:** https://todo-api.nikjos.in/
