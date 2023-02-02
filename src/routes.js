@@ -5,6 +5,7 @@ const genericController=require("./controllers/generic.controller")
 const todoController=require("./controllers/todo.controller")
 
 router.get('/ping',genericController.handler)
+router.get("/tryout", genericController.frontendRedirect);
 
 router.post('/auth/signup',authController.signUp)
 router.post("/auth/login", authController.login);

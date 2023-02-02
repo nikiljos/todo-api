@@ -21,9 +21,14 @@ const userDetail=(req,res)=>{
     })
 }
 
+const frontendRedirect = (req, res)=>{
+    res.status(200).send("<h1 style='font-family:sans-serif'>Sorry, Frontend Work under progress! Will be ready soon!</h1>")
+};
+
 
 
 module.exports = {
     handler,
-    userDetail
+    userDetail,
+    frontendRedirect
 };
