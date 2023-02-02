@@ -1,17 +1,16 @@
 const db=require("../db")
 
 const addTask=(req,res)=>{
-    let id=res.locals.userId
+    let _id=res.locals.userId
     let {title,priority}=req.body
     db.users.findOneAndUpdate(
-        { id },
+        { _id },
         {
             $push: {
                 tasks: {
                     title,
                     priority,
-                    completed: false,
-                    cancelled: false,
+                    status:"pending"
                 },
             },
         }
@@ -24,6 +23,65 @@ const addTask=(req,res)=>{
     })
 }
 
+const updateTask = (req, res) => {
+    let _id = res.locals.userId;
+    let type=req.params.updateType
+    if(!(type==="complete"||type==="pending"||type==="cancel")){
+        res.status(404).send({
+            status:false
+        })
+        return
+    }
+    let { taskId } = req.body;
+    db.users
+        .findOneAndUpdate(
+            { _id, "tasks.$._id": taskId },
+            {
+                "$set": {
+                    "tasks.$.status": type,
+                },
+            }
+        )
+        .then((data) => {
+            console.log(data);
+            if (data) {
+                res.status(200).send({
+                    status: true,
+                    // data
+                });
+            }
+            res.status(400).send({
+                status: false,
+                // data
+            });
+        });
+};
+
+const listTask=(req,res)=>{
+    db.users.find({
+        _id:res.locals.userId
+    })
+    .then(data=>{
+        let statusCode = {
+            complete: "✓",
+            cancel: "✗",
+            pending: "-",
+            undefined: "-",
+        };
+        res.status(200).send({
+            status:true,
+            data:data[0].tasks.map(elt=>({
+                id:elt.id,
+                title:elt.title,
+                status:elt.status,
+                formatted:`${elt.title} (${statusCode[elt.status]}) [${elt.priority?elt.priority:""}]`
+            }))
+        })
+    })
+}
+
 module.exports={
-    addTask
+    addTask,
+    listTask,
+    updateTask
 }

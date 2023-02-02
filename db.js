@@ -20,8 +20,7 @@ const userSchema = new Schema({
         {
             title:String,
             priority:Number,
-            completed:Boolean,
-            cancelled:Boolean
+            status:String
         }
     ]
 });
