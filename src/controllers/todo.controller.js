@@ -184,7 +184,11 @@ const summarizeTask=(req,res)=>{
         data[0].tasks.forEach(elt=>{
             let {status}=elt;
             if(status==="pending"||status==="cancel"||status==="complete"){
-                taskData[status].push(elt)
+                taskData[status].push({
+                    id:elt._id,
+                    title:elt.title,
+                    priority:elt.priority||null
+                })
             }
         })
         res.status(200).send({

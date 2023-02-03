@@ -56,19 +56,29 @@ Authorization: Bearer <auth_token>
             "id": "63dc022e37929165cb38663a",
             "title": "task def",
             "status": "cancel",
+            "priority": null,
             "formatted": "task def (✗) []"
         },
         {
             "id": "63dc023537929165cb38663d",
             "title": "task efg",
             "status": "complete",
+            "priority": null,
             "formatted": "task efg (✓) []"
         },
         {
             "id": "63dc031a37929165cb386655",
             "title": "task efg",
             "status": "pending",
+            "priority": null,
             "formatted": "task efg (-) []"
+        },
+        {
+            "id": "63dca24ff7012af55bb84b66",
+            "title": "task zz",
+            "status": "pending",
+            "priority": 9,
+            "formatted": "task zz (-) [9]"
         }
     ]
 }
