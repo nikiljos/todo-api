@@ -143,6 +143,11 @@ const listTask=(req,res)=>{
         _id:res.locals.userId
     })
     .then(data=>{
+        if(data.length===0){
+            res.status(400).send({
+                status:false
+            })
+        }
         let statusCode = {
             complete: "✓",
             cancel: "✗",
@@ -159,6 +164,11 @@ const listTask=(req,res)=>{
             }))
         })
     })
+    .catch(err=>[
+        res.status(500).send({
+            status:false
+        })
+    ])
 }
 
 const summarizeTask=(req,res)=>{
