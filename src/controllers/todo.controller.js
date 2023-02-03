@@ -3,6 +3,14 @@ const db=require("../db")
 const addTask=(req,res)=>{
     let _id=res.locals.userId
     let {title,priority}=req.body
+    if(!(typeof title==="string"&&title.length>0)){
+        res.status(400).send({
+            status:false
+        })
+    }
+    if(!(typeof priority==="number"&&(priority>=0&&priority<=9))){
+        priority=undefined
+    }
     db.users.findOneAndUpdate(
         { _id },
         {
@@ -139,7 +147,6 @@ const listTask=(req,res)=>{
             complete: "✓",
             cancel: "✗",
             pending: "-",
-            undefined: "-",
         };
         res.status(200).send({
             status:true,
@@ -147,7 +154,8 @@ const listTask=(req,res)=>{
                 id:elt.id,
                 title:elt.title,
                 status:elt.status,
-                formatted:`${elt.title} (${statusCode[elt.status]}) [${elt.priority?elt.priority:""}]`
+                priority:elt.priority||null,
+                formatted:`${elt.title} (${statusCode[elt.status]||""}) [${elt.priority||""}]`
             }))
         })
     })
